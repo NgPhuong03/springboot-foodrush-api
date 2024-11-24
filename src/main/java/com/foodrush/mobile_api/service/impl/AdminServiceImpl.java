@@ -7,6 +7,8 @@ import com.foodrush.mobile_api.repository.AdminRepository;
 import com.foodrush.mobile_api.service.AdminService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +19,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public AdminDto createAdmin(Admin admin) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         adminRepository.save(admin);
         AdminDto adminDto = modelMapper.map(admin, AdminDto.class);
         return adminDto;

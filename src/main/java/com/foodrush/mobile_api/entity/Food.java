@@ -23,6 +23,4 @@ public class Food {
     private String description;
     private int sale;
     private int cost;
-
-
 }

@@ -1,14 +1,18 @@
 package com.foodrush.mobile_api.service.impl;
 
-import com.foodrush.mobile_api.dto.OrderDto;
+import com.foodrush.mobile_api.dto.response.OrderResponseDto;
 import com.foodrush.mobile_api.dto.UserDto;
-import com.foodrush.mobile_api.entity.Order;
+import com.foodrush.mobile_api.dto.response.UserCreatedResponse;
 import com.foodrush.mobile_api.entity.User;
 import com.foodrush.mobile_api.exception.ResourceNotFoundException;
+import com.foodrush.mobile_api.exception.Username;
+import com.foodrush.mobile_api.repository.AdminRepository;
 import com.foodrush.mobile_api.repository.UserRepository;
 import com.foodrush.mobile_api.service.UserService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,21 +21,26 @@ import java.util.List;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
+    private AdminRepository adminRepository;
     private ModelMapper modelMapper;
 
     @Override
-    public UserDto createUser(User user) {
+    public UserCreatedResponse createUser(User user) {
+        if(adminRepository.findByUsername(user.getUsername()).isPresent())
+            throw new Username("Tai khoan da co nguoi su dung");
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        UserDto userDto = modelMapper.map(user,UserDto.class);
-        return userDto;
+        UserCreatedResponse userCreated = modelMapper.map(user,UserCreatedResponse.class);
+        return userCreated;
     }
 
     @Override
-    public UserDto getUser(Long id) {
+    public UserCreatedResponse getUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow( () -> new ResourceNotFoundException("Khong tim thay nguoi dung id: " + id));
-        UserDto userDto = modelMapper.map(user,UserDto.class);
-        return userDto;
+        UserCreatedResponse userGot = modelMapper.map(user,UserCreatedResponse.class);
+        return userGot;
     }
 
     @Override
@@ -45,19 +54,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<OrderDto> getOrders(Long id) {
+    public List<OrderResponseDto> getOrders(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow( () -> new ResourceNotFoundException("Khong tim thay user id: " + id));
-        List<OrderDto> orderDtoList = user.getOrderList().stream().map(e -> {
-            OrderDto orderDto = new OrderDto();
-            orderDto.setId(e.getId());
-            orderDto.setNote(e.getNote());
-            orderDto.setFoodList(e.getFoodList());
-            orderDto.setUser_id(e.getUser().getId());
-            orderDto.setStatus(e.getStatus());
-            return orderDto;
+
+        List<OrderResponseDto> orderResponseDtoList = user.getOrderList().stream().map(e -> {
+            OrderResponseDto orderResponseDto = new OrderResponseDto();
+            orderResponseDto.setNote(e.getNote());
+            orderResponseDto.setFoodList(e.getFoodList());
+            orderResponseDto.setUser_id(e.getUser().getId());
+            orderResponseDto.setStatus(e.getStatus());
+            orderResponseDto.setCost(e.getCost());
+            return orderResponseDto;
         }).toList();
-        return orderDtoList;
+
+        return orderResponseDtoList;
     }
 
 

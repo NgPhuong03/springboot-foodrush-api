@@ -10,13 +10,12 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "shippers")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class User {
+public class Shipper {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,9 +27,4 @@ public class User {
     @Column(unique = true, nullable = false)
     private String username;
     private String password;
-//    @JsonManagedReference
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Order> orderList;
-
 }

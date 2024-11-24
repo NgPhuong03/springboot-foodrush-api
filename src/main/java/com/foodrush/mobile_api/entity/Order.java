@@ -31,7 +31,6 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-//    @JsonBackReference
     private User user;
 
     @ManyToMany

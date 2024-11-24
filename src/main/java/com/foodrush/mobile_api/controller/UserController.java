@@ -1,8 +1,8 @@
 package com.foodrush.mobile_api.controller;
 
-import com.foodrush.mobile_api.dto.OrderDto;
+import com.foodrush.mobile_api.dto.response.OrderResponseDto;
 import com.foodrush.mobile_api.dto.UserDto;
-import com.foodrush.mobile_api.entity.Order;
+import com.foodrush.mobile_api.dto.response.UserCreatedResponse;
 import com.foodrush.mobile_api.entity.User;
 import com.foodrush.mobile_api.service.UserService;
 import lombok.AllArgsConstructor;
@@ -19,15 +19,15 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody User user){
-        UserDto savedUser= userService.createUser(user);
+    public ResponseEntity<UserCreatedResponse> createUser(@RequestBody User user){
+        UserCreatedResponse savedUser= userService.createUser(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<UserDto> getUser(@PathVariable("id") Long id){
-        UserDto userDto = userService.getUser(id);
-        return new ResponseEntity<>(userDto,HttpStatus.OK);
+    public ResponseEntity<UserCreatedResponse> getUser(@PathVariable("id") Long id){
+        UserCreatedResponse user = userService.getUser(id);
+        return new ResponseEntity<>(user,HttpStatus.OK);
     }
 
     @PutMapping("{id}")
@@ -37,8 +37,10 @@ public class UserController {
     }
 
     @GetMapping("{id}/orders")
-    public ResponseEntity<List<OrderDto>> getOrder(@PathVariable("id") Long id){
-        List<OrderDto> orders = userService.getOrders(id);
+    public ResponseEntity<List<OrderResponseDto>> getOrder(@PathVariable("id") Long id){
+        List<OrderResponseDto> orders = userService.getOrders(id);
         return new ResponseEntity<>(orders,HttpStatus.OK);
     }
+
+
 }

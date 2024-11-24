@@ -1,7 +1,6 @@
-package com.foodrush.mobile_api.dto;
+package com.foodrush.mobile_api.dto.response;
 
 import com.foodrush.mobile_api.entity.Food;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,11 +12,11 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderDto {
-    private Long id;
+public class OrderResponseDto {
     private String note;
     private boolean paymethod;
     private Long user_id;
     private List<Food> foodList;
     private String status;
+    private int cost;
 }
