@@ -24,7 +24,5 @@ public class Shipper {
     private String phone_number;
     @Column(unique = true, nullable = false)
     private String email;
-    @Column(unique = true, nullable = false)
-    private String username;
     private String password;
 }

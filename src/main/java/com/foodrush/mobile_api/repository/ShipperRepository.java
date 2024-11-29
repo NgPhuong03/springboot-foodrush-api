@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface ShipperRepository extends JpaRepository<Shipper,Long> {
-    Optional<Shipper> findByUsername(String username);
+    Optional<Shipper> findByEmail(String email);
 }

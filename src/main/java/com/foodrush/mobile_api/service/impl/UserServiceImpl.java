@@ -3,10 +3,12 @@ package com.foodrush.mobile_api.service.impl;
 import com.foodrush.mobile_api.dto.response.OrderResponseDto;
 import com.foodrush.mobile_api.dto.UserDto;
 import com.foodrush.mobile_api.dto.response.UserCreatedResponse;
+import com.foodrush.mobile_api.entity.Address;
 import com.foodrush.mobile_api.entity.User;
 import com.foodrush.mobile_api.exception.ResourceNotFoundException;
 import com.foodrush.mobile_api.exception.Username;
 import com.foodrush.mobile_api.repository.AdminRepository;
+import com.foodrush.mobile_api.repository.ShipperRepository;
 import com.foodrush.mobile_api.repository.UserRepository;
 import com.foodrush.mobile_api.service.UserService;
 import lombok.AllArgsConstructor;
@@ -22,11 +24,15 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private AdminRepository adminRepository;
+    private ShipperRepository shipperRepository;
     private ModelMapper modelMapper;
 
     @Override
     public UserCreatedResponse createUser(User user) {
-        if(adminRepository.findByUsername(user.getUsername()).isPresent())
+        if(adminRepository.findByEmail(user.getEmail()).isPresent()
+                || adminRepository.findByEmail(user.getEmail()).isPresent()
+                || shipperRepository.findByEmail(user.getEmail()).isPresent()
+        )
             throw new Username("Tai khoan da co nguoi su dung");
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -69,6 +75,14 @@ public class UserServiceImpl implements UserService {
         }).toList();
 
         return orderResponseDtoList;
+    }
+
+    @Override
+    public List<Address> getAddress(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay user id: " + id));
+
+        return user.getAddresses();
     }
 
 

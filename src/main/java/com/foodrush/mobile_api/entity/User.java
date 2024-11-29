@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -25,12 +26,14 @@ public class User {
     private String phone_number;
     @Column(unique = true, nullable = false)
     private String email;
-    @Column(unique = true, nullable = false)
-    private String username;
     private String password;
 //    @JsonManagedReference
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orderList;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Address> addresses;
 
 }
