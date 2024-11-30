@@ -22,4 +22,8 @@ public class FoodDto {
     private String description;
     private int sale;
     private int cost;
+    private boolean rice;
+    private boolean noodle;
+    private boolean mon40k;
+    private boolean vegan;
 }
