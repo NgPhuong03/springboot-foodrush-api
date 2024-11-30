@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,6 +31,14 @@ public class FoodServiceImpl implements FoodService {
     @Override
     public List<Food> getAll() {
         List<Food> foodList = foodRepository.findAll();
+        return foodList;
+    }
+
+    @Override
+    public List<Food> getTopOrder(int limit) {
+        List<Long> idList = foodRepository.topFoodOrder(limit).stream().toList();
+        List<Food> foodList = new ArrayList<>();
+        foodList = idList.stream().map(id -> foodRepository.findById(id).get()).toList();
         return foodList;
     }
 }

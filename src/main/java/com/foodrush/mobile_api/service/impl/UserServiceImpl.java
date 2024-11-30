@@ -5,6 +5,8 @@ import com.foodrush.mobile_api.dto.UserDto;
 import com.foodrush.mobile_api.dto.response.UserCreatedResponse;
 import com.foodrush.mobile_api.entity.Address;
 import com.foodrush.mobile_api.entity.User;
+import com.foodrush.mobile_api.exception.AppException;
+import com.foodrush.mobile_api.exception.ErrorCode;
 import com.foodrush.mobile_api.exception.ResourceNotFoundException;
 import com.foodrush.mobile_api.exception.Username;
 import com.foodrush.mobile_api.repository.AdminRepository;
@@ -29,11 +31,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserCreatedResponse createUser(User user) {
-        if(adminRepository.findByEmail(user.getEmail()).isPresent()
-                || adminRepository.findByEmail(user.getEmail()).isPresent()
-                || shipperRepository.findByEmail(user.getEmail()).isPresent()
-        )
-            throw new Username("Tai khoan da co nguoi su dung");
+        if (userRepository.existsByEmail(user.getEmail())){
+            throw new AppException(ErrorCode.USER_EXISTED);
+        }
+
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);

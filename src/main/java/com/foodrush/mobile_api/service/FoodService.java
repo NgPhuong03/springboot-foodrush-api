@@ -9,4 +9,5 @@ public interface FoodService {
     void createFood (Food food);
     Food getFood (Long id);
     List<Food> getAll();
+    List<Food> getTopOrder(int limit);
 }

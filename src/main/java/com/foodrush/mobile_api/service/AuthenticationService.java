@@ -2,6 +2,8 @@ package com.foodrush.mobile_api.service;
 
 import com.foodrush.mobile_api.dto.request.AuthenticationRequest;
 import com.foodrush.mobile_api.dto.response.AuthenticationResponse;
+import com.foodrush.mobile_api.exception.AppException;
+import com.foodrush.mobile_api.exception.ErrorCode;
 import com.foodrush.mobile_api.exception.ResourceNotFoundException;
 import com.foodrush.mobile_api.repository.AdminRepository;
 import com.foodrush.mobile_api.repository.ShipperRepository;
@@ -9,6 +11,7 @@ import com.foodrush.mobile_api.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,7 +27,7 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         var role = "";
         boolean isAu = false;
-        Long id;
+        Long id ;
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
         var user = userRepository.findByEmail(request.getEmail());
@@ -42,9 +45,11 @@ public class AuthenticationService {
             id = shipper.get().getId();
             role = "shipper";
             isAu = passwordEncoder.matches( request.getPassword(), shipper.get().getPassword());
-        } else
-            throw new ResourceNotFoundException("Khong tim thay email: " + request.getEmail());
+        }        else
+            throw new AppException(ErrorCode.WRONG_LOGIN_INFORMATION);
 
+        if (!isAu)
+            throw new AppException(ErrorCode.WRONG_LOGIN_INFORMATION);
         return AuthenticationResponse.builder()
                 .authenticated(isAu)
                 .role(role)
