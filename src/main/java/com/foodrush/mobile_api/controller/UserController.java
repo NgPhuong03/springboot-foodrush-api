@@ -1,5 +1,6 @@
 package com.foodrush.mobile_api.controller;
 
+import com.foodrush.mobile_api.dto.response.ApiResponse;
 import com.foodrush.mobile_api.dto.response.OrderResponseDto;
 import com.foodrush.mobile_api.dto.UserDto;
 import com.foodrush.mobile_api.dto.response.UserCreatedResponse;
@@ -20,15 +21,20 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserCreatedResponse> createUser(@RequestBody User user){
-        UserCreatedResponse savedUser= userService.createUser(user);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    public ApiResponse<UserCreatedResponse> createUser(@RequestBody User user){
+        ApiResponse apiResponse = new ApiResponse<>();
+        apiResponse.setCode(201);
+        apiResponse.setResult(userService.createUser(user));
+
+        return apiResponse;
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<UserCreatedResponse> getUser(@PathVariable("id") Long id){
-        UserCreatedResponse user = userService.getUser(id);
-        return new ResponseEntity<>(user,HttpStatus.OK);
+    public ApiResponse<UserCreatedResponse> getUser(@PathVariable("id") Long id){
+        ApiResponse apiResponse = new ApiResponse<>();
+        apiResponse.setCode(200);
+        apiResponse.setResult(userService.getUser(id));
+        return apiResponse;
     }
 
     @PutMapping("{id}")
