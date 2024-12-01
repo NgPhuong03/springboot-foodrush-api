@@ -1,7 +1,8 @@
 package com.foodrush.mobile_api.controller;
 
 
-import com.foodrush.mobile_api.dto.OrderCreateDto;
+import com.foodrush.mobile_api.dto.request.OrderCreateDto;
+import com.foodrush.mobile_api.dto.response.ApiResponse;
 import com.foodrush.mobile_api.dto.response.OrderResponseDto;
 import com.foodrush.mobile_api.service.OrderService;
 import lombok.AllArgsConstructor;
@@ -16,9 +17,9 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<OrderResponseDto> createOrder(@RequestBody OrderCreateDto orderCreateDto){
-        OrderResponseDto created_order = orderService.createOrder(orderCreateDto);
-        return new ResponseEntity<>(created_order, HttpStatus.CREATED);
+    public ApiResponse createOrder(@RequestBody OrderCreateDto orderCreateDto){
+        orderService.createOrder(orderCreateDto);
+        return new ApiResponse<>();
     }
 
     @GetMapping("{id}")

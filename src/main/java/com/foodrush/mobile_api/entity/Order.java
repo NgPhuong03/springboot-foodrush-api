@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "orders")
@@ -25,14 +26,18 @@ public class Order {
     private String note;
     private boolean paymethod;
     private String status;
-    private int cost;
+    private Long cost;
     private Timestamp created_at;
     private Timestamp paid_at;
+    private Long address_id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
-    private List<Food> foodList;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private Set<OrderFood> orderFoods;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private Set<OrderAddon> orderAddons;
 }

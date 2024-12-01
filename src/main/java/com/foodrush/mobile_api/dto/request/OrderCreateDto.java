@@ -1,6 +1,6 @@
-package com.foodrush.mobile_api.dto;
+package com.foodrush.mobile_api.dto.request;
 
-import com.foodrush.mobile_api.entity.Food;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,8 @@ public class OrderCreateDto {
     private String note;
     private boolean paymethod;
     private Long user_id;
-    private List<Long> foodList;
-    private String status;
-    private int cost;
+    private List<FoodQuantity> foods;
+    private List<AddonQuantity> addons;
+    private Long cost;
+    private Long address_id;
 }
