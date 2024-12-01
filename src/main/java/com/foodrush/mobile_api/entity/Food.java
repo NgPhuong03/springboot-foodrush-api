@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,9 +24,8 @@ public class Food {
     @Column(columnDefinition = "TEXT")
     private String description;
     private int sale;
-    private int cost;
-    private boolean rice;
-    private boolean noodle;
-    private boolean mon40k;
-    private boolean vegan;
+    private Long cost;
+
+    @OneToMany(mappedBy = "food", cascade = CascadeType.ALL)
+    private Set<OrderFood> orderFoods;
 }

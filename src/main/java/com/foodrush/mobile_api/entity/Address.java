@@ -20,6 +20,7 @@ public class Address {
     String address;
     double latitude;
     double longitude;
+    float distance;
     String title;
     String type;
 

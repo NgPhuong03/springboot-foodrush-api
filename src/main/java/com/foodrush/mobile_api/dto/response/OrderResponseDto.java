@@ -18,5 +18,5 @@ public class OrderResponseDto {
     private Long user_id;
     private List<Food> foodList;
     private String status;
-    private int cost;
+    private Long cost;
 }

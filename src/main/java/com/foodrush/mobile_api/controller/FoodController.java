@@ -1,5 +1,7 @@
 package com.foodrush.mobile_api.controller;
 
+import com.foodrush.mobile_api.dto.FoodDto;
+import com.foodrush.mobile_api.dto.response.HomeScreenFood;
 import com.foodrush.mobile_api.entity.Food;
 import com.foodrush.mobile_api.service.FoodService;
 import lombok.AllArgsConstructor;
@@ -24,27 +26,45 @@ public class FoodController {
 
 
     @GetMapping("{id}")
-    public ResponseEntity<Food> getFood(@PathVariable Long id) {
-        Food food = foodService.getFood(id);
+    public ResponseEntity<FoodDto> getFood(@PathVariable Long id) {
+        FoodDto food = foodService.getFood(id);
         return ResponseEntity.ok(food);
     }
 
     @GetMapping
-    public ResponseEntity<List<Food>> getTypeFood(@RequestParam(name = "type") String type, @RequestParam(name = "limit") int limit){
-        List<Food> foodList = new ArrayList<>();
+    public ResponseEntity<List<FoodDto>> getListFood(@RequestParam(name = "type") String type, @RequestParam(name = "limit") int limit){
+        List<FoodDto> foodList = new ArrayList<>();
 
         switch (type){
             case "topseller":
                 foodList = foodService.getTopOrder(limit);
                 break;
+            case "rating":
+                foodList = foodService.getTopRating(limit);
+                break;
             default:
-                foodList = foodService.getAll();
+                foodList = foodService.getTopSale(limit);
                 break;
         }
-
         return ResponseEntity.ok(foodList);
     }
 
+    @GetMapping("/alltop")
+    public ResponseEntity<HomeScreenFood> getAllTop(){
+        return ResponseEntity.ok(foodService.getAllTop());
+    }
+
+    @GetMapping("/category")
+    public ResponseEntity<List<FoodDto>> getByCategory(@RequestParam(name = "category") String category){
+        List<FoodDto> foodDto = switch (category) {
+            case "rice" -> foodService.getCategoryRice();
+            case "noodle" -> foodService.getCategoryNoodle();
+            case "mon40k" -> foodService.getCategoryMon40k();
+            case "vegan" -> foodService.getCategoryVegan();
+            default -> foodService.getAll();
+        };
+        return ResponseEntity.ok(foodDto);
+    }
 
 
 
