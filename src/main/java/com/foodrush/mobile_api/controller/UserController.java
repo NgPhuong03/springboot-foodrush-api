@@ -5,6 +5,7 @@ import com.foodrush.mobile_api.dto.response.OrderResponseDto;
 import com.foodrush.mobile_api.dto.UserDto;
 import com.foodrush.mobile_api.dto.response.UserCreatedResponse;
 import com.foodrush.mobile_api.entity.Address;
+import com.foodrush.mobile_api.entity.Food;
 import com.foodrush.mobile_api.entity.User;
 import com.foodrush.mobile_api.service.UserService;
 import lombok.AllArgsConstructor;
@@ -54,8 +55,6 @@ public class UserController {
         List<Address> address = userService.getAddress(id);
         return new ResponseEntity<>(address,HttpStatus.OK);
     }
-
-
 
 
 }

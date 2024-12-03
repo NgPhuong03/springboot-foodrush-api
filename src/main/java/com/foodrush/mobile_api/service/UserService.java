@@ -1,9 +1,11 @@
 package com.foodrush.mobile_api.service;
 
+import com.foodrush.mobile_api.dto.FoodDto;
 import com.foodrush.mobile_api.dto.response.OrderResponseDto;
 import com.foodrush.mobile_api.dto.UserDto;
 import com.foodrush.mobile_api.dto.response.UserCreatedResponse;
 import com.foodrush.mobile_api.entity.Address;
+import com.foodrush.mobile_api.entity.Food;
 import com.foodrush.mobile_api.entity.User;
 
 import java.util.List;
@@ -14,4 +16,7 @@ public interface UserService {
     UserDto updateUser(UserDto userDto, Long id);
     List<OrderResponseDto> getOrders(Long id);
     List<Address> getAddress(Long id);
+    void addFavoriteFood(Long id,Food food);
+    void deleteFavoriteFood(Long user_id, Long food_id);
+    FoodDto getFavorites(Long id);
 }

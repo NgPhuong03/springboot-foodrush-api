@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -28,4 +29,7 @@ public class Food {
 
     @OneToMany(mappedBy = "food", cascade = CascadeType.ALL)
     private Set<OrderFood> orderFoods;
+
+    @ManyToMany(mappedBy = "favoriteFood")
+    private Set<User> user = new HashSet<>();
 }
