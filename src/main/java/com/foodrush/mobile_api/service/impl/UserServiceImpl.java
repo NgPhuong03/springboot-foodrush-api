@@ -1,15 +1,18 @@
 package com.foodrush.mobile_api.service.impl;
 
+import com.foodrush.mobile_api.dto.FoodDto;
 import com.foodrush.mobile_api.dto.response.OrderResponseDto;
 import com.foodrush.mobile_api.dto.UserDto;
 import com.foodrush.mobile_api.dto.response.UserCreatedResponse;
 import com.foodrush.mobile_api.entity.Address;
+import com.foodrush.mobile_api.entity.Food;
 import com.foodrush.mobile_api.entity.User;
 import com.foodrush.mobile_api.exception.AppException;
 import com.foodrush.mobile_api.exception.ErrorCode;
 import com.foodrush.mobile_api.exception.ResourceNotFoundException;
 import com.foodrush.mobile_api.exception.Username;
 import com.foodrush.mobile_api.repository.AdminRepository;
+import com.foodrush.mobile_api.repository.FoodRepository;
 import com.foodrush.mobile_api.repository.ShipperRepository;
 import com.foodrush.mobile_api.repository.UserRepository;
 import com.foodrush.mobile_api.service.UserService;
@@ -19,14 +22,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
-    private AdminRepository adminRepository;
-    private ShipperRepository shipperRepository;
+    private FoodRepository foodRepository;
+    private FoodServiceImpl foodService;
     private ModelMapper modelMapper;
 
     @Override
@@ -84,6 +90,38 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay user id: " + id));
 
         return user.getAddresses();
+    }
+
+    @Override
+    public void addFavoriteFood(Long id, Food food) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
+        Set<Food> foods = user.getFavoriteFood();
+        foods.add(food);
+        user.setFavoriteFood(foods);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void deleteFavoriteFood(Long user_id, Long food_id) {
+        Optional<User> optionalUser = userRepository.findById(user_id);
+        if (optionalUser.isPresent()){
+            User user = optionalUser.get();
+
+            Food food = foodRepository.findById(food_id).orElseThrow(() -> new  AppException(ErrorCode.INVALID_KEY));
+            user.getFavoriteFood().remove(food);
+            userRepository.save(user);
+        }
+    }
+
+    @Override
+    public FoodDto getFavorites(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
+        Set<Food> foods = user.getFavoriteFood();
+
+        Iterator<Food> first = foods.iterator();
+        FoodDto dto = foodService.getFood(first.next().getId());
+        return dto;
     }
 
 
