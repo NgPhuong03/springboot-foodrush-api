@@ -28,7 +28,7 @@ public class Order {
     private Timestamp created_at;
     private Timestamp paid_at;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "address_id")
     private Address address;
 
@@ -39,7 +39,7 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private Set<OrderFood> orderFoods;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "shipper_id")
     private Shipper shipper;
 }

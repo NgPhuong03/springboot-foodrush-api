@@ -73,11 +73,12 @@ public class UserServiceImpl implements UserService {
 
         List<OrderResponseDto> orderResponseDtoList = user.getOrderList().stream().map(e -> {
             OrderResponseDto orderResponseDto = new OrderResponseDto();
-            orderResponseDto.setNote(e.getNote());
-//            orderResponseDto.setFoodList(e.getFoodList());
-            orderResponseDto.setUser_id(e.getUser().getId());
+
+            orderResponseDto.setOrder_id(e.getId());
             orderResponseDto.setStatus(e.getStatus());
             orderResponseDto.setCost(e.getCost());
+            orderResponseDto.setCreate_at(e.getCreated_at());
+            orderResponseDto.setPaid_at(e.getPaid_at());
             return orderResponseDto;
         }).toList();
 

@@ -13,10 +13,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderCreateDto {
+    private Long user_id;
+    private Long address_id;
     private String note;
     private boolean paymethod;
-    private Long user_id;
-    private List<FoodAddonRequest> list;
     private Long cost;
-    private Long address_id;
+    private List<FoodAddonRequest> list;
 }

@@ -9,8 +9,8 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddonDto {
-    int price;
-    String name;
-    private int quantity;
+public class AddressDto {
+    private String name;
+    private String phoneNumber;
+    private String address;
 }

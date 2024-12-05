@@ -19,7 +19,7 @@ public class OrderFoodAddon {
 
     @ManyToOne
     @MapsId("orderFoodId")
-    OrderFood order;
+    OrderFood orderFood;
 
     @ManyToOne
     @MapsId("addonId")

@@ -26,7 +26,7 @@ public class OrderFood {
 
     int quantity;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "orderFood", cascade = CascadeType.ALL)
     private Set<OrderFoodAddon> orderAddons;
 }
 
