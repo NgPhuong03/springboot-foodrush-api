@@ -16,8 +16,7 @@ public class OrderCreateDto {
     private String note;
     private boolean paymethod;
     private Long user_id;
-    private List<FoodQuantity> foods;
-    private List<AddonQuantity> addons;
+    private List<FoodAddonRequest> list;
     private Long cost;
     private Long address_id;
 }

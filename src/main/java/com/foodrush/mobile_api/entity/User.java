@@ -1,5 +1,6 @@
 package com.foodrush.mobile_api.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -39,11 +40,16 @@ public class User {
     private List<Address> addresses;
 
     @ManyToMany
+    @JsonManagedReference
     @JoinTable(
             name = "favorites",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name ="food_id")
     )
     private Set<Food> favoriteFood =  new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Cart> carts;
 
 }
