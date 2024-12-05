@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -14,17 +14,19 @@ import java.io.Serializable;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 public class OrderFood {
-    @EmbeddedId
-    OrderFoodId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
     @ManyToOne
-    @MapsId("orderId")
     Order order;
 
     @ManyToOne
-    @MapsId("foodId")
     Food food;
 
     int quantity;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private Set<OrderFoodAddon> orderAddons;
 }
 

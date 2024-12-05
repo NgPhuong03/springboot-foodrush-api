@@ -22,17 +22,17 @@ public class OrderController {
         return new ApiResponse<>();
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<OrderResponseDto> getOrder(@PathVariable Long id){
-        OrderResponseDto responseDto = orderService.getOrder(id);
-        return ResponseEntity.ok(responseDto);
-    }
-
-    @PatchMapping("{id}/paid")
-    public ResponseEntity<OrderResponseDto> paidOrder(@PathVariable Long id){
-        OrderResponseDto responseDto = orderService.paidOrder(id);
-        return ResponseEntity.ok(responseDto);
-    }
+//    @GetMapping("{id}")
+//    public ResponseEntity<OrderResponseDto> getOrder(@PathVariable Long id){
+//        OrderResponseDto responseDto = orderService.getOrder(id);
+//        return ResponseEntity.ok(responseDto);
+//    }
+//
+//    @PatchMapping("{id}/paid")
+//    public ResponseEntity<OrderResponseDto> paidOrder(@PathVariable Long id){
+//        OrderResponseDto responseDto = orderService.paidOrder(id);
+//        return ResponseEntity.ok(responseDto);
+//    }
 
 
 

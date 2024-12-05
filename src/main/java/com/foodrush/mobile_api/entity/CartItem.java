@@ -1,5 +1,6 @@
 package com.foodrush.mobile_api.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -7,21 +8,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Set;
-
 @Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AddOn {
+public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    int price;
-    String name;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cart_id")
+    Cart cart;
 
-    @OneToMany(mappedBy = "addOn", cascade = CascadeType.ALL)
-    private Set<OrderFoodAddon> orderAddons;
+    @ManyToOne
+    @JoinColumn(name = "addon_id")
+    AddOn addon;
+
+    int addon_quantity;
 }

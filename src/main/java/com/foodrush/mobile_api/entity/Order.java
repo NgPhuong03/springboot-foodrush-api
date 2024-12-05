@@ -1,6 +1,5 @@
 package com.foodrush.mobile_api.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -29,7 +27,10 @@ public class Order {
     private Long cost;
     private Timestamp created_at;
     private Timestamp paid_at;
-    private Long address_id;
+
+    @OneToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -38,6 +39,7 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private Set<OrderFood> orderFoods;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private Set<OrderAddon> orderAddons;
+    @OneToOne
+    @JoinColumn(name = "shipper_id")
+    private Shipper shipper;
 }

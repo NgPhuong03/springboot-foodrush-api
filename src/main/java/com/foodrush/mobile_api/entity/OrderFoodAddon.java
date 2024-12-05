@@ -1,5 +1,6 @@
 package com.foodrush.mobile_api.entity;
 
+import com.foodrush.mobile_api.entity.custom.OrderAddonId;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -12,13 +13,13 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
-public class OrderAddon {
+public class OrderFoodAddon {
     @EmbeddedId
     OrderAddonId id;
 
     @ManyToOne
-    @MapsId("orderId")
-    Order order;
+    @MapsId("orderFoodId")
+    OrderFood order;
 
     @ManyToOne
     @MapsId("addonId")
