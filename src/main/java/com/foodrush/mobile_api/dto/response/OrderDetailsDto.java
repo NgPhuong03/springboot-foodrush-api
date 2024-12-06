@@ -1,7 +1,6 @@
 package com.foodrush.mobile_api.dto.response;
 
 import com.foodrush.mobile_api.dto.request.FoodAddonRequest;
-import com.foodrush.mobile_api.entity.Food;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,10 +13,16 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderResponseDto {
-    private Long order_id;
+public class OrderDetailsDto {
+    private Long user_id;
+    private Long shipper_id;
     private String status;
-    private Long cost;
     private Timestamp create_at;
     private Timestamp paid_at;
+    private String note;
+    private boolean paymethod;
+    private Long cost;
+    private AddressDto address;
+    private List<FoodAddOnResponse> list;
+
 }
