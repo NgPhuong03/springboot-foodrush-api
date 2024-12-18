@@ -1,5 +1,6 @@
 package com.foodrush.mobile_api.controller;
 
+import com.foodrush.mobile_api.dto.response.AddressDto;
 import com.foodrush.mobile_api.dto.response.ApiResponse;
 import com.foodrush.mobile_api.dto.response.OrderResponseDto;
 import com.foodrush.mobile_api.dto.UserDto;
@@ -9,6 +10,7 @@ import com.foodrush.mobile_api.entity.Food;
 import com.foodrush.mobile_api.entity.User;
 import com.foodrush.mobile_api.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,8 +53,8 @@ public class UserController {
     }
 
     @GetMapping("{id}/address")
-    public ResponseEntity<List<Address>> getAddresses(@PathVariable("id") Long id){
-        List<Address> address = userService.getAddress(id);
+    public ResponseEntity<List<AddressDto>> getAddresses(@PathVariable("id") Long id){
+        List<AddressDto> address = userService.getAddress(id);
         return new ResponseEntity<>(address,HttpStatus.OK);
     }
 

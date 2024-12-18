@@ -11,4 +11,5 @@ public interface OrderService {
     void chooseShipper(Long id, Long shipper);
     void changeStatus(Long id, String status);
     Location getLocation(Long id);
+    Location getUserLocation(Long id);
 }

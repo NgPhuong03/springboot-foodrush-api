@@ -1,6 +1,7 @@
 package com.foodrush.mobile_api.service.impl;
 
 import com.foodrush.mobile_api.dto.FoodDto;
+import com.foodrush.mobile_api.dto.response.AddressDto;
 import com.foodrush.mobile_api.dto.response.OrderResponseDto;
 import com.foodrush.mobile_api.dto.UserDto;
 import com.foodrush.mobile_api.dto.response.UserCreatedResponse;
@@ -26,6 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -86,16 +88,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Address> getAddress(Long id) {
+    public List<AddressDto> getAddress(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay user id: " + id));
 
-        return user.getAddresses();
+        return user.getAddresses().stream().map((e) -> {
+            AddressDto dto = new AddressDto();
+            dto.setAddress(e.getAddress());
+            dto.setLatitude(e.getLatitude());
+            dto.setLongitude(e.getLongitude());
+            dto.setDistance(e.getDistance());
+            dto.setType(e.getType());
+            dto.setTitle(e.getTitle());
+            dto.setId(e.getId());
+            return dto;
+        }).toList();
     }
 
     @Override
-    public void addFavoriteFood(Long id, Food food) {
+    public void addFavoriteFood(Long id, Long food_id) {
         User user = userRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
+        Food food = foodRepository.findById(food_id)
                 .orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
         Set<Food> foods = user.getFavoriteFood();
         foods.add(food);
@@ -116,13 +130,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public FoodDto getFavorites(Long id) {
+    public List<FoodDto> getFavorites(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
         Set<Food> foods = user.getFavoriteFood();
 
-        Iterator<Food> first = foods.iterator();
-        FoodDto dto = foodService.getFood(first.next().getId());
-        return dto;
+        List<FoodDto> foodDtos = foods.stream()
+                .map(e -> foodService.getFood(e.getId()))
+                .collect(Collectors.toList());
+
+        return foodDtos;
     }
 
 

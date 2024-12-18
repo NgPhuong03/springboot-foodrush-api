@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FoodRepository extends JpaRepository<Food,Long> {
-    @Query(value = "select id from foods join order_food on foods.id = order_food.food_id group by id order by count(*) desc limit ?1", nativeQuery = true)
+    @Query(value = "select foods.id from foods join order_food on foods.id = order_food.food_id group by foods.id order by count(*) desc limit ?1", nativeQuery = true)
     List<Long> topFoodOrder(int limit);
 
     @Query(value = "select foods.id\n" +

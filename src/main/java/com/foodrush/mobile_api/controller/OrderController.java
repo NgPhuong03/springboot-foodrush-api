@@ -41,10 +41,17 @@ public class OrderController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @GetMapping("{id}/location")
-    public ResponseEntity<ApiResponse<Location>> getLocation(@PathVariable Long id){
+    @GetMapping("{id}/shipper/location")
+    public ResponseEntity<ApiResponse<Location>> getShipperLocation(@PathVariable Long id){
         ApiResponse<Location> responseDto = new ApiResponse<>();
         responseDto.setResult(orderService.getLocation(id));
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @GetMapping("{id}/user/location")
+    public ResponseEntity<ApiResponse<Location>> getUserLocation(@PathVariable Long id){
+        ApiResponse<Location> responseDto = new ApiResponse<>();
+        responseDto.setResult(orderService.getUserLocation(id));
         return ResponseEntity.ok(responseDto);
     }
 

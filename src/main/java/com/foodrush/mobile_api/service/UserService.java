@@ -1,6 +1,7 @@
 package com.foodrush.mobile_api.service;
 
 import com.foodrush.mobile_api.dto.FoodDto;
+import com.foodrush.mobile_api.dto.response.AddressDto;
 import com.foodrush.mobile_api.dto.response.OrderResponseDto;
 import com.foodrush.mobile_api.dto.UserDto;
 import com.foodrush.mobile_api.dto.response.UserCreatedResponse;
@@ -15,8 +16,8 @@ public interface UserService {
     UserCreatedResponse getUser(Long id);
     UserDto updateUser(UserDto userDto, Long id);
     List<OrderResponseDto> getOrders(Long id);
-    List<Address> getAddress(Long id);
-    void addFavoriteFood(Long id,Food food);
+    List<AddressDto> getAddress(Long id);
+    void addFavoriteFood(Long id,Long food_id);
     void deleteFavoriteFood(Long user_id, Long food_id);
-    FoodDto getFavorites(Long id);
+    List<FoodDto> getFavorites(Long id);
 }
