@@ -7,7 +7,10 @@ import com.foodrush.mobile_api.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/users/{id}/favorites")
@@ -16,18 +19,18 @@ public class FavoriteController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<FoodDto>> getFavorites (@PathVariable("id") Long user_id){
-        ApiResponse<FoodDto> apiResponse = new ApiResponse<>();
+    public ResponseEntity<ApiResponse<List<FoodDto>>> getFavorites (@PathVariable("id") Long user_id){
+        ApiResponse<List<FoodDto>> apiResponse = new ApiResponse<>();
         apiResponse.setResult(userService.getFavorites(user_id));
         apiResponse.setMessage("OK");
-        return new ResponseEntity<>(apiResponse,HttpStatus.CREATED);
+        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
 
 
-    @PostMapping
-    public ResponseEntity<ApiResponse> addFavoriteFood (@PathVariable("id") Long user_id, @RequestBody Food food){
+    @PostMapping("{food_id}")
+    public ResponseEntity<ApiResponse> addFavoriteFood (@PathVariable("id") Long user_id, @PathVariable("food_id") Long food_id){
         ApiResponse apiResponse = new ApiResponse<>();
-        userService.addFavoriteFood(user_id,food);
+        userService.addFavoriteFood(user_id,food_id);
         apiResponse.setMessage("OK");
         return new ResponseEntity<>(apiResponse,HttpStatus.CREATED);
     }

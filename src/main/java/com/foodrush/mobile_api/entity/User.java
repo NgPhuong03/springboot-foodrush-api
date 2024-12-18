@@ -36,11 +36,9 @@ public class User {
     private List<Order> orderList;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonManagedReference
     private List<Address> addresses;
 
     @ManyToMany
-    @JsonManagedReference
     @JoinTable(
             name = "favorites",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -49,7 +47,6 @@ public class User {
     private Set<Food> favoriteFood =  new HashSet<>();
 
     @OneToMany(mappedBy = "user")
-    @JsonManagedReference
     private List<Cart> carts;
 
 }

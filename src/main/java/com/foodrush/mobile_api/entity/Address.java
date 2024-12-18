@@ -18,14 +18,13 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String address;
-    double latitude;
-    double longitude;
-    float distance;
+    Double latitude;
+    Double longitude;
+    Float distance;
     String title;
     String type;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
     @JoinColumn(name = "user_id")
     private User user;
 }

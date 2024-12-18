@@ -170,5 +170,12 @@ public class OrderServiceImpl implements OrderService {
         return new Location(shipper.getLatitude(),shipper.getLongitude());
     }
 
+    @Override
+    public Location getUserLocation(Long id) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
+        return new Location(order.getAddress().getLatitude(), order.getAddress().getLongitude());
+    }
+
 
 }
