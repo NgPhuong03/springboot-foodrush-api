@@ -78,24 +78,29 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponse getCart(Long id) {
+    public List<CartResponse> getCart(Long id) {
         User user = new User();
         user.setId(id);
-        Cart cart = cartRepository.findByUser(user)
+        List<Cart> carts = cartRepository.findByUser(user)
                 .orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
 
-        CartResponse response = new CartResponse();
-        response.setCart_id(cart.getId());
-        response.setFood(foodService.getFood(cart.getFood().getId()));
-        response.setFood_quantity(cart.getFood_quantity());
-        response.setAddonList(cart.getCartItems().stream().map((addon) -> {
-            AddonDto dto = new AddonDto();
-            dto.setName(addon.getAddon().getName());
-            dto.setQuantity(addon.getAddon_quantity());
-            dto.setPrice(addon.getAddon().getPrice());
-            return dto;
-        }).toList());
-        return response;
+        List<CartResponse> cartResponses = carts.stream().map(
+                e -> {
+                    CartResponse response = new CartResponse();
+                    response.setCart_id(e.getId());
+                    response.setFood(foodService.getFood(e.getFood().getId()));
+                    response.setFood_quantity(e.getFood_quantity());
+                    response.setAddonList(e.getCartItems().stream().map((addon) -> {
+                        AddonDto dto = new AddonDto();
+                        dto.setName(addon.getAddon().getName());
+                        dto.setQuantity(addon.getAddon_quantity());
+                        dto.setPrice(addon.getAddon().getPrice());
+                        return dto;
+                    }).toList());
+                    return response;
+                }
+        ).toList();
+        return cartResponses;
     }
 
     @Override

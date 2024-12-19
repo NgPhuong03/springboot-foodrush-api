@@ -1,6 +1,9 @@
 package com.foodrush.mobile_api.service;
 
+import com.foodrush.mobile_api.dto.response.AddressDto;
 import com.foodrush.mobile_api.entity.Address;
+import com.foodrush.mobile_api.exception.AppException;
+import com.foodrush.mobile_api.exception.ErrorCode;
 import com.foodrush.mobile_api.exception.ResourceNotFoundException;
 import com.foodrush.mobile_api.repository.AddressRepository;
 import lombok.AccessLevel;
@@ -16,6 +19,15 @@ public class AddressService {
 
     public void AddAddress(Address address){
         addressRepository.save(address);
+    }
+
+    public boolean updateAddress (Long id, AddressDto dto) {
+        Address address = addressRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
+        address.setType(dto.getType());
+        address.setTitle(dto.getTitle());
+        addressRepository.save(address);
+        return true;
     }
 
     public void deleteAddress(Long id){

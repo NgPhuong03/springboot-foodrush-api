@@ -2,6 +2,8 @@ package com.foodrush.mobile_api.controller;
 
 import com.foodrush.mobile_api.dto.request.FoodQuantity;
 import com.foodrush.mobile_api.dto.request.OrderCreateDto;
+import com.foodrush.mobile_api.dto.response.AddressDto;
+import com.foodrush.mobile_api.dto.response.ApiResponse;
 import com.foodrush.mobile_api.entity.*;
 import com.foodrush.mobile_api.service.AddressService;
 import lombok.AllArgsConstructor;
@@ -34,10 +36,14 @@ public class AddressController {
         return ResponseEntity.ok("Cap nhat thanh cong");
     }
 
-    @PostMapping
-    public Order test (@RequestBody OrderCreateDto item){
-        ModelMapper modelMapper = new ModelMapper();
-
-        return modelMapper.map(item,Order.class);
+    @PatchMapping("{id}")
+    public ResponseEntity<ApiResponse<String>> updateAddress (@PathVariable("id") Long id, @RequestBody AddressDto item){
+        ApiResponse<String> apiResponse = new ApiResponse<>();
+         if (addressService.updateAddress(id, item)){
+             apiResponse.setResult("Cap nhat thanh cong");
+         } else {
+             apiResponse.setResult("Cap nhat that bai");
+         }
+        return ResponseEntity.ok(apiResponse);
     }
 }
