@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/cart")
@@ -15,9 +17,9 @@ public class CartController {
     private CartService cartService;
 
     @GetMapping("{id}")
-    public ResponseEntity<ApiResponse<CartResponse>> getCart(@PathVariable Long id){
+    public ResponseEntity<ApiResponse<List<CartResponse>>> getCart(@PathVariable Long id){
 
-        ApiResponse<CartResponse> apiResponse =new ApiResponse<>();
+        ApiResponse<List<CartResponse>> apiResponse =new ApiResponse<>();
         apiResponse.setMessage("OK");
         apiResponse.setResult(cartService.getCart(id));
         return ResponseEntity.ok(apiResponse);
