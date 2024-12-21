@@ -9,6 +9,7 @@ import com.foodrush.mobile_api.repository.AddressRepository;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AddressService {
     AddressRepository addressRepository;
+    ModelMapper modelMapper;
 
     public void AddAddress(Address address){
         addressRepository.save(address);
@@ -34,5 +36,13 @@ public class AddressService {
         addressRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay address id: " + id));
         addressRepository.deleteById(id);
+    }
+
+    public AddressDto lastAddress (Long user_id) {
+        Address address = addressRepository.findByLastOrder(user_id)
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
+
+        AddressDto dto = modelMapper.map(address ,AddressDto.class);
+        return dto;
     }
 }

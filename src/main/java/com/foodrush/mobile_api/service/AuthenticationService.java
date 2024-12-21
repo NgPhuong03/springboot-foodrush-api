@@ -31,17 +31,12 @@ public class AuthenticationService {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
         var user = userRepository.findByEmail(request.getEmail());
-        var admin = adminRepository.findByEmail(request.getEmail());
         var shipper = shipperRepository.findByEmail(request.getEmail());
         if (user.isPresent()) {
             id = user.get().getId();
             role = "user";
             isAu = passwordEncoder.matches( request.getPassword(), user.get().getPassword());
-        }else if (admin.isPresent()) {
-            id = admin.get().getId();
-            role = "admin";
-            isAu = passwordEncoder.matches( request.getPassword(), admin.get().getPassword());
-        } else if (shipper.isPresent()){
+        }else if (shipper.isPresent()){
             id = shipper.get().getId();
             role = "shipper";
             isAu = passwordEncoder.matches( request.getPassword(), shipper.get().getPassword());
