@@ -31,6 +31,12 @@ public class FoodController {
         return ResponseEntity.ok(food);
     }
 
+    @GetMapping("all")
+    public ResponseEntity<List<FoodDto>> getAllFood() {
+        List<FoodDto> foods = foodService.getAll();
+        return ResponseEntity.ok(foods);
+    }
+
     @GetMapping
     public ResponseEntity<List<FoodDto>> getListFood(@RequestParam(name = "type") String type, @RequestParam(name = "limit") int limit){
         List<FoodDto> foodList = new ArrayList<>();
