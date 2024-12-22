@@ -15,6 +15,7 @@ import com.foodrush.mobile_api.service.OrderService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -89,7 +90,7 @@ public class OrderServiceImpl implements OrderService {
         addressDto.setAddress(order.getAddress().getAddress());
         addressDto.setName(order.getUser().getName());
         addressDto.setPhoneNumber(order.getUser().getPhone_number());
-        if (order.getShipper() != null){
+        if (order.getShipper() != null) {
             response.setShipper_id(order.getShipper().getId());
         }
 
@@ -134,12 +135,12 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
         Shipper shipper = shipperRepository.findById(shipper_id)
-                        .orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
-        if(order.isPaymethod()){
-            order.setPaid_at(  new Timestamp(System.currentTimeMillis()));
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
+        if (order.isPaymethod()) {
+            order.setPaid_at(new Timestamp(System.currentTimeMillis()));
         }
         order.setShipper(shipper);
-        order.setStatus("dangnau");
+        order.setStatus("danggiao");
         orderRepository.save(order);
     }
 
@@ -148,9 +149,9 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
 
-        if (status.equals("dahuy") || status.equals("danggiao") ){
+        if (status.equals("dahuy") || status.equals("dangnau")) {
             order.setStatus(status);
-        } else if (status.equals("dagiao")){
+        } else if (status.equals("dagiao")) {
             Shipper shipper = order.getShipper();
             shipper.setLatitude(10.882245102818498);
             shipper.setLongitude(106.78249876263239);
@@ -162,12 +163,14 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
     }
 
+
+
     @Override
     public Location getLocation(Long id) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
         Shipper shipper = order.getShipper();
-        return new Location(shipper.getLatitude(),shipper.getLongitude());
+        return new Location(shipper.getLatitude(), shipper.getLongitude());
     }
 
     @Override
@@ -177,5 +180,24 @@ public class OrderServiceImpl implements OrderService {
         return new Location(order.getAddress().getLatitude(), order.getAddress().getLongitude());
     }
 
+    @Override
+    public List<OrderResponseDto> getAllShipperOrder(Long id) {
+        List<Order> orderList = orderRepository.findAll();
+
+        orderList = orderList.stream()
+                .filter(e -> e.getStatus().equals("dangnau") || e.getShipper().getId().equals(id))
+                .toList();
+
+
+        return orderList.stream().map(e -> {
+            OrderResponseDto dto = new OrderResponseDto();
+            dto.setOrder_id(e.getId());
+            dto.setCreate_at(e.getCreated_at());
+            dto.setStatus(e.getStatus());
+            dto.setCost(e.getCost());
+            dto.setPaid_at(e.getPaid_at());
+            return dto;
+        }).toList();
+    }
 
 }

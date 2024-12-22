@@ -8,7 +8,8 @@ public enum ErrorCode {
     INVALID_KEY(1404, "Validation key error"),
     USER_EXISTED(1001, "Người dùng đã tồn tại"),
     UNAUTHORIZED(1002, "Chưa đăng nhập"),
-    WRONG_LOGIN_INFORMATION(1003, "Tài khoản hoặc mật khẩu không chính xác")
+    WRONG_LOGIN_INFORMATION(1003, "Tài khoản hoặc mật khẩu không chính xác"),
+    WRONG_LOCATION_INFORMATION(1004, "Kinh độ hoặc vĩ độ không chính xác")
     ;
 
 
