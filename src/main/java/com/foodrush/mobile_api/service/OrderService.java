@@ -5,6 +5,8 @@ import com.foodrush.mobile_api.dto.response.Location;
 import com.foodrush.mobile_api.dto.response.OrderDetailsDto;
 import com.foodrush.mobile_api.dto.response.OrderResponseDto;
 
+import java.util.List;
+
 public interface OrderService {
     void createOrder(OrderCreateDto orderCreateDto);
     OrderDetailsDto getOrder(Long id);
@@ -12,4 +14,5 @@ public interface OrderService {
     void changeStatus(Long id, String status);
     Location getLocation(Long id);
     Location getUserLocation(Long id);
+    List<OrderResponseDto> getAllShipperOrder(Long id);
 }

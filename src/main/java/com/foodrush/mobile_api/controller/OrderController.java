@@ -12,11 +12,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/orders")
 @AllArgsConstructor
 public class OrderController {
     private OrderService orderService;
+
+    @GetMapping("shipper/{id}")
+    public ResponseEntity<ApiResponse<List<OrderResponseDto>>> getAll(@PathVariable Long id){
+        ApiResponse<List<OrderResponseDto>> responseDto = new ApiResponse<>();
+        responseDto.setResult(orderService.getAllShipperOrder(id));
+        return ResponseEntity.ok(responseDto);
+    }
+
 
     @PostMapping
     public ResponseEntity<ApiResponse<OrderCreateDto>> createOrder(@RequestBody OrderCreateDto orderCreateDto){
@@ -56,7 +66,7 @@ public class OrderController {
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<ApiResponse> changeStatus (@PathVariable Long id, @RequestParam(name = "status",defaultValue = "choxacnhan")String status ){
+    public ResponseEntity<ApiResponse> changeStatus (@PathVariable("id") Long id, @RequestParam(name = "status",defaultValue = "choxacnhan")String status ){
         ApiResponse response = new ApiResponse<>();
         orderService.changeStatus(id,status);
         response.setMessage("Ok");
