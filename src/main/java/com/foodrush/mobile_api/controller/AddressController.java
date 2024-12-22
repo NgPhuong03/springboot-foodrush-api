@@ -46,4 +46,11 @@ public class AddressController {
          }
         return ResponseEntity.ok(apiResponse);
     }
+
+    @GetMapping("{id}/last_order")
+    public ResponseEntity<ApiResponse<AddressDto>> lastAddressOrder (@PathVariable("id") Long id){
+        ApiResponse<AddressDto> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(addressService.lastAddress(id));
+        return ResponseEntity.ok(apiResponse);
+    }
 }
