@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.*;
 public class RatingController {
     RatingService ratingService;
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<String>> addRating (@RequestBody Rating rating){
+    @PostMapping("{user_id}")
+    public ResponseEntity<ApiResponse<String>> addRating (@RequestBody Rating rating, @PathVariable Long user_id){
         ApiResponse<String> apiResponse = new ApiResponse<>();
-        ratingService.addRating(rating);
+        ratingService.addRating(rating,user_id);
         return ResponseEntity.ok(apiResponse);
     }
 
