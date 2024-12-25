@@ -20,5 +20,5 @@ public class FoodDto {
     private int sale;
     private int cost;
     private int count_rv;
-    private float star;
+    private Float star;
 }

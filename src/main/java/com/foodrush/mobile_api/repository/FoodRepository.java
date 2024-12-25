@@ -27,7 +27,7 @@ public interface FoodRepository extends JpaRepository<Food,Long> {
     List<Long> topFoodSale(int limit);
 
     @Query(value = "select AVG(star) from rating where food_id = ?1", nativeQuery = true)
-    float getRating(Long id);
+    Float getAvgRating(Long id);
 
     @Query(value = "select count(*) from rating where food_id = ?",nativeQuery = true)
     int getCount_rv(Long id);
