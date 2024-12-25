@@ -29,7 +29,7 @@ public class FoodServiceImpl implements FoodService {
         Food food = foodRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay food id: " + id));
         FoodDto dto = modelMapper.map(food,FoodDto.class);
-        dto.setStar(foodRepository.getRating(id));
+        dto.setStar(foodRepository.getAvgRating(id));
         dto.setCount_rv(foodRepository.getCount_rv(id));
         return dto;
     }
@@ -39,7 +39,7 @@ public class FoodServiceImpl implements FoodService {
         List<FoodDto> foodList = foodRepository.findAll().stream()
                 .map( e -> {
                     FoodDto dto = modelMapper.map(e, FoodDto.class);
-                    dto.setStar(foodRepository.getRating(e.getId()));
+                    dto.setStar(foodRepository.getAvgRating(e.getId()));
                     dto.setCount_rv(foodRepository.getCount_rv(e.getId()));
                     return dto;
                 })
@@ -56,7 +56,7 @@ public class FoodServiceImpl implements FoodService {
                     Food food = foodRepository.findById(id).get();
                     FoodDto dto = modelMapper.map(food, FoodDto.class);
                     dto.setCount_rv(foodRepository.getCount_rv(id));
-                    dto.setStar(foodRepository.getRating(id));
+                    dto.setStar(foodRepository.getAvgRating(id));
                     return dto;
                 }).toList();
         return foodList;
@@ -71,7 +71,7 @@ public class FoodServiceImpl implements FoodService {
                     Food food = foodRepository.findById(id).get();
                     FoodDto dto = modelMapper.map(food, FoodDto.class);
                     dto.setCount_rv(foodRepository.getCount_rv(id));
-                    dto.setStar(foodRepository.getRating(id));
+                    dto.setStar(foodRepository.getAvgRating(id));
                     return dto;
                 }).toList();
         return foodList;
@@ -96,7 +96,7 @@ public class FoodServiceImpl implements FoodService {
                     Food food = foodRepository.findById(id).get();
                     FoodDto dto = modelMapper.map(food, FoodDto.class);
                     dto.setCount_rv(foodRepository.getCount_rv(id));
-                    dto.setStar(foodRepository.getRating(id));
+                    dto.setStar(foodRepository.getAvgRating(id));
                     return dto;
                 }).toList();
         return foodList;
@@ -111,7 +111,7 @@ public class FoodServiceImpl implements FoodService {
                     Food food = foodRepository.findById(id).get();
                     FoodDto dto = modelMapper.map(food, FoodDto.class);
                     dto.setCount_rv(foodRepository.getCount_rv(id));
-                    dto.setStar(foodRepository.getRating(id));
+                    dto.setStar(foodRepository.getAvgRating(id));
                     return dto;
                 }).toList();
         return foodList;
@@ -126,7 +126,7 @@ public class FoodServiceImpl implements FoodService {
                     Food food = foodRepository.findById(id).get();
                     FoodDto dto = modelMapper.map(food, FoodDto.class);
                     dto.setCount_rv(foodRepository.getCount_rv(id));
-                    dto.setStar(foodRepository.getRating(id));
+                    dto.setStar(foodRepository.getAvgRating(id));
                     return dto;
                 }).toList();
         return foodList;
@@ -141,7 +141,7 @@ public class FoodServiceImpl implements FoodService {
                     Food food = foodRepository.findById(id).get();
                     FoodDto dto = modelMapper.map(food, FoodDto.class);
                     dto.setCount_rv(foodRepository.getCount_rv(id));
-                    dto.setStar(foodRepository.getRating(id));
+                    dto.setStar(foodRepository.getAvgRating(id));
                     return dto;
                 }).toList();
         return foodList;
@@ -157,7 +157,7 @@ public class FoodServiceImpl implements FoodService {
                     Food food = foodRepository.findById(id).get();
                     FoodDto dto = modelMapper.map(food, FoodDto.class);
                     dto.setCount_rv(foodRepository.getCount_rv(id));
-                    dto.setStar(foodRepository.getRating(id));
+                    dto.setStar(foodRepository.getAvgRating(id));
                     return dto;
                 }).toList();
         return foodList;
