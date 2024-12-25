@@ -17,9 +17,17 @@ public class RatingServiceImpl implements RatingService {
     RatingRepository ratingRepository;
 
     @Override
-    public void addRating(Rating rating) {
-        rating.setCreated_at(new Timestamp(System.currentTimeMillis()));
-        ratingRepository.save(rating);
+    public void addRating(Rating rating, Long user_id) {
+        if (ratingRepository.getByUserAndFood(user_id, rating.getFood_id()).isPresent()){
+            Rating db_rating = ratingRepository.getByUserAndFood(user_id,rating.getFood_id()).get();
+            db_rating.setStar(rating.getStar());
+            ratingRepository.save(db_rating);
+        }else {
+            rating.setUser_id(user_id);
+            rating.setCreated_at(new Timestamp(System.currentTimeMillis()));
+            ratingRepository.save(rating);
+        }
+
     }
 
     @Override
